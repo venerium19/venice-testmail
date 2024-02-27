@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form>
+      <label for="fname">Full name:</label><br />
+      <input type="text" id="fname" name="Name" /><br />
+      <label for="email">Email:</label><br />
+      <input type="email" id="email" name="Email" /><br />
+
+      <button
+        type="button"
+        id="toggleSpeech"
+        onclick="toggleSpeechRecognition()"
+      >
+        Start Speaking
+      </button>
+    </form>
+    <p id="testMessage"></p>
+    <script
+      type="text/javascript"
+      src="https://cdn.emailjs.com/dist/email.min.js"
+    ></script>
+
+    <script type="text/javascript">
+      (function () {
+        emailjs.init("jvUN4lI-1KfaYkbs1"); // Initialize EmailJS with your user ID
+      })();
+
+      var recognition = new (window.SpeechRecognition ||
+        window.webkitSpeechRecognition ||
+        window.mozSpeechRecognition ||
+        window.msSpeechRecognition)();
+
+      recognition.lang = "en-US";
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 5;
+
+      var recognitionActive = false;
+
+      recognition.onresult = function (event) {
+        var transcript = event.results[0][0].transcript;
+        console.log("You said: ", transcript);
+
+        // Retrieve values from input fields
+        var name = document.getElementById("fname").value;
+        var email_add = document.getElementById("email").value;
+
+        // Send the transcript via EmailJS
+        var templateParams = {
+          message: transcript,
+          from_name: name,
+          email_add: email_add,
+        };
+
+        // Replace 'YOUR_SERVICE_ID' and 'YOUR_TEMPLATE_ID' with actual values
+        emailjs
+          .send("service_b3kszxr", "template_459hiem", templateParams)
+          .then(
+            function (response) {
+              document.getElementById("testMessage").innerHTML = transcript;
+              console.log("Email sent successfully:", response);
+            },
+            function (error) {
+              document.getElementById("testMessage").innerHTML =
+                "Error sending email";
+              console.error("Email sending failed:", error);
+            }
+          );
+      };
+
+      // Function to toggle speech recognition
+      function toggleSpeechRecognition() {
+        if (!recognitionActive) {
+          recognition.start();
+          recognitionActive = true;
+          document.getElementById("toggleSpeech").textContent = "Stop Speaking";
+          console.log("Listening for speech...");
+        } else {
+          recognition.stop();
+          recognitionActive = false;
+          document.getElementById("toggleSpeech").textContent =
+            "Start Speaking";
+          console.log("Speech recognition stopped.");
+        }
+      }
+    </script>
+  </body>
+</html>
