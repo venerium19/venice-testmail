@@ -3,7 +3,60 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Speech Analyzer</title>
+    <style>
+      /* CSS for form styling */
+      body,
+      html {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-image: url("rm218-bb-07.jpg");
+      }
+
+      form {
+        max-width: 400px; /* Set maximum width for the form */
+        margin: 0 auto; /* Center the form horizontally */
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      label {
+        font-size: 1.3em;
+        font-weight: bold;
+        color: #fff;
+        display: block; /* Ensure labels are displayed as block elements */
+        margin-bottom: 10px; /* Add spacing between labels and inputs */
+      }
+
+      input[type="text"],
+      input[type="email"],
+      button {
+        width: 100%; /* Make input fields and buttons full width */
+        padding: 10px;
+        margin-bottom: 15px; /* Add spacing between input fields */
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        box-sizing: border-box; /* Ensure padding and border are included in width */
+      }
+
+      button {
+        background-color: #007bff;
+        color: #fff;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+
+      #testMessage {
+        margin-top: 20px; /* Add spacing above the test message */
+      }
+    </style>
   </head>
   <body>
     <form>
@@ -20,6 +73,7 @@
         Start Speaking
       </button>
     </form>
+
     <p id="testMessage"></p>
     <script
       type="text/javascript"
@@ -57,18 +111,19 @@
           email_add: email_add,
         };
 
-        // Replace 'YOUR_SERVICE_ID' and 'YOUR_TEMPLATE_ID' with actual values
         emailjs
           .send("service_b3kszxr", "template_459hiem", templateParams)
           .then(
             function (response) {
               document.getElementById("testMessage").innerHTML = transcript;
               console.log("Email sent successfully:", response);
+              alert("Email sent successfully!");
             },
             function (error) {
               document.getElementById("testMessage").innerHTML =
                 "Error sending email";
               console.error("Email sending failed:", error);
+              alert("Something went wrong!");
             }
           );
       };
@@ -76,6 +131,9 @@
       // Function to toggle speech recognition
       function toggleSpeechRecognition() {
         if (!recognitionActive) {
+          alert(
+            "To use the Speech Analyze AI, we're asking you to allow the usage of microphone"
+          );
           recognition.start();
           recognitionActive = true;
           document.getElementById("toggleSpeech").textContent = "Stop Speaking";
