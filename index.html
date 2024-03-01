@@ -2,79 +2,76 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Speech Analyzer</title>
+    <title>Voice Analyzer</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
     <style>
-      /* CSS for form styling */
-      body,
-      html {
-        height: 100%;
-        margin: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-image: url("rm218-bb-07.jpg");
-      }
-
-      form {
-        max-width: 400px; /* Set maximum width for the form */
-        margin: 0 auto; /* Center the form horizontally */
-        padding: 20px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-      }
-
-      label {
-        font-size: 1.3em;
-        font-weight: bold;
-        color: #fff;
-        display: block; /* Ensure labels are displayed as block elements */
-        margin-bottom: 10px; /* Add spacing between labels and inputs */
-      }
-
       input[type="text"],
-      input[type="email"],
-      button {
-        width: 100%; /* Make input fields and buttons full width */
+      input[type="email"] {
+        height: 80%;
+        width: 50%;
         padding: 10px;
-        margin-bottom: 15px; /* Add spacing between input fields */
+        margin-top: 10px;
+        margin-right: 10px;
         border: 1px solid #ccc;
         border-radius: 3px;
         box-sizing: border-box; /* Ensure padding and border are included in width */
       }
-
-      button {
-        background-color: #007bff;
-        color: #fff;
-        cursor: pointer;
-      }
-
-      button:hover {
-        background-color: #0056b3;
-      }
-
-      #testMessage {
-        margin-top: 20px; /* Add spacing above the test message */
-      }
     </style>
   </head>
   <body>
-    <form>
-      <label for="fname">Full name:</label><br />
-      <input type="text" id="fname" name="Name" /><br />
-      <label for="email">Email:</label><br />
-      <input type="email" id="email" name="Email" /><br />
+    <header class="header">
+      <a href="#" class="logo">
+        <img src="images/Earphones.png" alt="" />
+      </a>
 
-      <button
-        type="button"
-        id="toggleSpeech"
-        onclick="toggleSpeechRecognition()"
-      >
-        Start Speaking
-      </button>
-    </form>
+      <div id="menu" class="fas fa-bars"></div>
+    </header>
 
-    <p id="testMessage"></p>
+    <section class="home">
+      <div class="content">
+        <h1 class="title">
+          Discover the <span>Real</span> sound within <span>you</span>
+        </h1>
+        <p class="description">
+          This AI analyzes your true voice. The voice how others would hear you.
+        </p>
+        <div class="description" style="display: flex; height: 80px !important">
+          <input type="email" id="email" name="Email" /><br />
+          <button
+            class="btn"
+            type="button"
+            id="toggleSpeech"
+            onclick="toggleSpeechRecognition()"
+          >
+            Try Speaking!
+          </button>
+        </div>
+      </div>
+
+      <div class="image">
+        <img
+          src="images/Earphones.png"
+          alt=""
+          data-speed="-3"
+          class="move"
+          height="500px"
+          width="120px"
+        />
+      </div>
+    </section>
+
+    <!-- GSAP CDN Link -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
+
+    <!-- custom js file -->
+    <script src="script.js"></script>
+
     <script
       type="text/javascript"
       src="https://cdn.emailjs.com/dist/email.min.js"
@@ -101,7 +98,6 @@
         console.log("You said: ", transcript);
 
         // Retrieve values from input fields
-        var name = document.getElementById("fname").value;
         var email_add = document.getElementById("email").value;
 
         // Send the transcript via EmailJS
@@ -115,9 +111,10 @@
           .send("service_b3kszxr", "template_459hiem", templateParams)
           .then(
             function (response) {
-              document.getElementById("testMessage").innerHTML = transcript;
               console.log("Email sent successfully:", response);
-              alert("Email sent successfully!");
+              alert(
+                "The result will be sent to you in a short notice. Thanks for using. :)"
+              );
             },
             function (error) {
               document.getElementById("testMessage").innerHTML =
@@ -132,17 +129,16 @@
       function toggleSpeechRecognition() {
         if (!recognitionActive) {
           alert(
-            "To use the Speech Analyze AI, we're asking you to allow the usage of microphone"
+            "To use the Voice Analyze AI, we're asking you to allow the usage of microphone"
           );
           recognition.start();
           recognitionActive = true;
-          document.getElementById("toggleSpeech").textContent = "Stop Speaking";
+          document.getElementById("toggleSpeech").textContent = "Stop";
           console.log("Listening for speech...");
         } else {
           recognition.stop();
           recognitionActive = false;
-          document.getElementById("toggleSpeech").textContent =
-            "Start Speaking";
+          document.getElementById("toggleSpeech").textContent = "Try Speaking!";
           console.log("Speech recognition stopped.");
         }
       }
